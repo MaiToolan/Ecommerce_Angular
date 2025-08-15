@@ -1,0 +1,98 @@
+<section>
+<div class="container my-8">
+  <h1 class="my-3 font-bold capitalize">Register Form</h1>
+  <form [formGroup]="registrationForm" (ngSubmit)="submit()">
+    <!--UserName-->
+    <div class="field">
+       <p-inputGroup>
+        <p-inputGroupAddon>
+            <i class="pi pi-user"></i>
+        </p-inputGroupAddon>
+        <input pInputText formControlName="name" placeholder="Username" />
+    </p-inputGroup>
+    <div class="validation-msg">
+  @if (name.dirty && name.touched) {
+
+    @if (name.hasError('required')) {
+      <p-message severity="error" text="Name is required" />
+    }
+
+    @if (name.hasError('minlength')) {
+      <p-message severity="error" text="Must be at least 3 characters" />
+    }
+
+    @if (name.hasError('maxlength')) {
+      <p-message severity="error" text="Cannot exceed 20 characters" />
+    }
+  }
+</div>
+    </div>
+
+    <!--Email-->
+    <div class="field">
+       <p-inputGroup>
+        <p-inputGroupAddon>
+            <i class="pi pi-envelope"></i>
+        </p-inputGroupAddon>
+        <input pInputText formControlName="email" placeholder="Email" />
+    </p-inputGroup>
+    <div class="validation-msg">
+  @if (email.dirty && email.touched) {
+
+    @if (email.hasError('required')) {
+      <p-message severity="error" text="Email is required" />
+    }
+
+    @if (email.hasError('email')) {
+      <p-message severity="error" text="Invalid Email" />
+    }
+  }
+</div>
+    </div>
+
+    <!--Password-->
+    <div class="field">
+       <p-inputGroup>
+        <p-inputGroupAddon>
+            <i class="pi pi-lock"></i>
+        </p-inputGroupAddon>
+        <input pInputText formControlName="password" placeholder="Password" type="password" />
+    </p-inputGroup>
+    <div class="validation-msg">
+  @if (password.dirty && password.touched) {
+
+    @if (password.hasError('required')) {
+      <p-message severity="error" text="Password is required" />
+    }
+        @if (password.hasError('minlength')) {
+      <p-message severity="error" text="Must be at least 3 characters" />
+    }
+
+    @if (password.hasError('maxlength')) {
+      <p-message severity="error" text="Cannot exceed 20 characters" />
+    }
+
+  }
+</div>
+    </div>
+
+    <!--ConfirmPassword-->
+    <div class="field">
+       <p-inputGroup>
+        <p-inputGroupAddon>
+            <i class="pi pi-lock"></i>
+        </p-inputGroupAddon>
+        <input pInputText formControlName="confirmpassword" placeholder="Confirm Password" type="password"/>
+    </p-inputGroup>
+    <div class="validation-msg">
+  @if ((confirmpassword.dirty || confirmpassword.touched ) && confirmpassword.hasError('passNotMatch')) {
+
+      <p-message severity="error" text="Passwords do not match" />
+    }
+
+</div>
+    </div>
+    <p-button  type="submit" label="Submit" />
+  </form>
+</div>
+</section>
