@@ -1,51 +1,38 @@
-import { Component ,OnInit} from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import {Message, MessageModule } from 'primeng/message';
+import { Component, ViewEncapsulation} from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
+import { SharedModule } from '../../shared/module/shared/shared-module';
+import { MessageService } from 'primeng/api';
+import { IRegister } from '../../core/interfaces/http';
+import { AuthService } from '../../core/service/authServices';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, InputGroupModule, InputGroupAddonModule, InputTextModule,ReactiveFormsModule,ButtonModule,MessageModule],
+  imports: [SharedModule],
   templateUrl: './register.html',
-  styleUrl: './register.scss'
+  styleUrl: './register.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class Register {
-/*   constructor(private _formbuilder : FormBuilder){};
 
-  registrationform!:FormGroup;
-  ngOnInit(): void {
-    this.registrationform = this._formbuilder.group({
-      name:['',[Validators.required,Validators.minLength(3),Validators.maxLength(15)]],
-      email:['',[Validators.required,Validators.email]],
-      password:['',[Validators.required,Validators.minLength(3),Validators.maxLength(15)]],
-      confirmpassword:['',{ validators: [Validators.required], updateOn: 'blur' }]
-    },{Validators:this.passwordMatchValidator});
-  }
-
-  passwordMatchValidator :ValidatorFn = (form:AbstractControl):null|ValidationErrors =>{
-   const pass=form.get('password')?.value;
-   const confirmpass=form.get('confirmpassword')?.value;
-   return (pass && confirmpass && pass !== confirmpass) ?  {'passwordMismatch':true} :null;
-  }; */
-
-
-  name!: FormControl;
+  username!: FormControl;
   email!: FormControl;
   password!: FormControl;
   confirmpassword!: FormControl;
   registrationForm!: FormGroup;
 
-  constructor() {
+  constructor(private _authService: AuthService,
+     private _messageService: MessageService,
+    private _router: Router,
+    private _ngxSpinnerService: NgxSpinnerService) {
     this.initFormControls();
     this.initFormGroupe();
   }
 
   initFormControls(): void {
-    this.name = new FormControl('', [
+    this.username = new FormControl('', [
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(20),
@@ -64,7 +51,7 @@ export class Register {
 
   initFormGroupe(): void {
     this.registrationForm = new FormGroup({
-      name: this.name,
+      username: this.username,
       email: this.email,
       password: this.password,
       confirmpassword: this.confirmpassword,
@@ -82,7 +69,7 @@ export class Register {
 
   submit() {
     if (this.registrationForm.valid) {
-      //this.siginUp(this.registrationForm.value);
+      this.siginUp(this.registrationForm.value);
     } else {
       this.registrationForm.markAllAsTouched();
       Object.keys(this.registrationForm.controls).forEach((control) =>
@@ -90,6 +77,29 @@ export class Register {
       );
     }
   }
+  siginUp(data: IRegister): void {
+    this._ngxSpinnerService.show();
+    this._authService.register(data).subscribe({
+      next: (response) => {
+          this.show('success', 'success', 'success register');
+          const { email, password } = data;
+          this._authService.login({email, password }).subscribe((next) => {
+            this._router.navigate(['home']);
+          });
 
-
+        this._ngxSpinnerService.hide();
+      },
+      error: (err) => {
+        this.show('error', 'Error', err.error.error);
+        this._ngxSpinnerService.hide();
+      },
+    });
+  }
+  show(severity: string, summary: string, detail: string) {
+    this._messageService.add({
+      severity: severity,
+      summary: summary,
+      detail: detail,
+    });
+  }
 }

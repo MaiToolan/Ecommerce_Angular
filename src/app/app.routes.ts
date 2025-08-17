@@ -7,7 +7,8 @@ export const routes: Routes = [
     children:[
       {path:'',redirectTo:'login',pathMatch:'full'},
       {path:'login',loadComponent:()=>import('./Pages/login/login').then(c=>c.Login)},
-      {path:'register',loadComponent:()=>import('./Pages/register/register').then(c=>c.Register)}
+      {path:'register',loadComponent:()=>import('./Pages/register/register').then(c=>c.Register)},
+      {path:'home',loadComponent:()=>import('./Pages/home/home').then(c=>c.Home)}
     ]
   },
   {path:'user',loadComponent:()=>import('./Layouts/user-layout/user-layout').then(c=>c.UserLayout)}

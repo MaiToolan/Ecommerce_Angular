@@ -8,20 +8,20 @@
         <p-inputGroupAddon>
             <i class="pi pi-user"></i>
         </p-inputGroupAddon>
-        <input pInputText formControlName="name" placeholder="Username" />
+        <input pInputText formControlName="username" placeholder="Username" [autofocus]="true"/>
     </p-inputGroup>
     <div class="validation-msg">
-  @if (name.dirty && name.touched) {
+  @if (username.dirty && username.touched) {
 
-    @if (name.hasError('required')) {
+    @if (username.hasError('required')) {
       <p-message severity="error" text="Name is required" />
     }
 
-    @if (name.hasError('minlength')) {
+    @if (username.hasError('minlength')) {
       <p-message severity="error" text="Must be at least 3 characters" />
     }
 
-    @if (name.hasError('maxlength')) {
+    @if (username.hasError('maxlength')) {
       <p-message severity="error" text="Cannot exceed 20 characters" />
     }
   }
@@ -92,7 +92,13 @@
 
 </div>
     </div>
-    <p-button  type="submit" label="Submit" />
+    <p-button type="submit" label="Submit"  severity="info"/>
   </form>
 </div>
+<div class="card flex justify-content-center">
+    <p-toast />
+</div>
 </section>
+<ngx-spinner bdColor="rgba(0,0,0,0.3)" size="medium" color="#3B82F6" type="line-scale" [fullScreen]="true">
+
+</ngx-spinner>

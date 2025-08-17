@@ -1,1 +1,62 @@
-<p>login works!</p>
+<section>
+<div class="container my-8">
+  <h1 class="my-3 font-bold capitalize">Login</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="submit()">
+     <!--Email-->
+    <div class="field">
+       <p-inputGroup>
+        <p-inputGroupAddon>
+            <i class="pi pi-envelope"></i>
+        </p-inputGroupAddon>
+        <input pInputText formControlName="email" placeholder="Email" [autofocus]="true" />
+    </p-inputGroup>
+    <div class="validation-msg">
+  @if (email.dirty && email.touched) {
+
+    @if (email.hasError('required')) {
+      <p-message severity="error" text="Email is required" />
+    }
+
+    @if (email.hasError('email')) {
+      <p-message severity="error" text="Invalid Email" />
+    }
+  }
+</div>
+    </div>
+
+
+    <!--Password-->
+    <div class="field">
+       <p-inputGroup>
+        <p-inputGroupAddon>
+            <i class="pi pi-lock"></i>
+        </p-inputGroupAddon>
+        <input pInputText formControlName="password" placeholder="Password" type="password" />
+    </p-inputGroup>
+    <div class="validation-msg">
+  @if (password.dirty && password.touched) {
+
+    @if (password.hasError('required')) {
+      <p-message severity="error" text="Password is required" />
+    }
+        @if (password.hasError('minlength')) {
+      <p-message severity="error" text="Must be at least 3 characters" />
+    }
+
+    @if (password.hasError('maxlength')) {
+      <p-message severity="error"  text="Cannot exceed 20 characters" />
+    }
+
+  }
+</div>
+    </div>
+    <p-button type="submit"  label="Login"   severity="info"/>
+  </form>
+</div>
+<div class="card flex justify-content-center">
+    <p-toast />
+</div>
+</section>
+<ngx-spinner bdColor="rgba(0,0,0,0.3)" size="medium" color="#3B82F6" type="line-scale" [fullScreen]="true">
+
+</ngx-spinner>

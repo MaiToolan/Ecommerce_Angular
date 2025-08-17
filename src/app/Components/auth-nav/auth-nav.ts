@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-auth-nav',
-  imports: [MenubarModule,RouterLink],
+  imports: [MenubarModule,RouterLink,RouterLinkActive],
   templateUrl: './auth-nav.html',
   styleUrl: './auth-nav.scss'
 })
