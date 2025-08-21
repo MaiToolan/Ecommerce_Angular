@@ -1,3 +1,4 @@
+import { UserData } from './../../core/service/user-data';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ILogin } from '../../core/interfaces/http';
@@ -6,6 +7,7 @@ import { Router } from '@angular/router';
 import {  NgxSpinnerService } from 'ngx-spinner';
 import { SharedModule } from '../../shared/module/shared/shared-module';
 import { MessageService } from 'primeng/api';
+import { StorageService } from '../../core/service/storageService';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +26,8 @@ export class Login {
     private _messageService: MessageService,
     private _ngxSpinnerService: NgxSpinnerService,
     private _router: Router,
+    private _StorageService: StorageService,
+    private _userData :UserData,
   ) {
     this.initFormControls();
     this.initFormGroupe();
@@ -58,9 +62,16 @@ export class Login {
 
   signIn(data: ILogin): void {
     this._ngxSpinnerService.show();
-    this._authService.login(data).subscribe({
+    this._authService.getUsers().subscribe(users=>{
+    const user=users.find((u: {email: string})=>u.email===data.email);
+    if(user){
+      this._authService.login({username:user.username,email: user.email ,password :user.password}).subscribe({
       next: (response) => {
+        if(response.token){
+          this._StorageService.setItem('id',user.id);
+          this._StorageService.setItem('name',user.username) ;
           this.show('success', 'success', 'success login');
+        }
         this._ngxSpinnerService.hide();
         this._router.navigate(['home']);
       },
@@ -69,6 +80,8 @@ export class Login {
         this._ngxSpinnerService.hide();
       },
     });
+    }
+    })
   }
   show(severity: string, summary: string, detail: string) {
     this._messageService.add({
@@ -77,4 +90,13 @@ export class Login {
       detail: detail,
     });
   }
+  getUsernameFromEmail(email :string):string {
+    if(!email) return '';
+    const name= email.split('@')[0].split('.').map(p=>p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+    return name;
+  }
+
+
 }
+
+

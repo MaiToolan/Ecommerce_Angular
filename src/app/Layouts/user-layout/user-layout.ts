@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { UserNav } from "../../Components/user-nav/user-nav";
 import { UserFooter } from "../../Components/user-footer/user-footer";
-import { Home } from "../../Pages/home/home";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-user-layout',
-  imports: [UserNav, UserFooter, Home],
+  imports: [UserNav, UserFooter, RouterOutlet],
   templateUrl: './user-layout.html',
   styleUrl: './user-layout.scss',
   standalone:true

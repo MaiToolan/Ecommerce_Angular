@@ -1,27 +1,38 @@
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { baseUrl } from '../apiRoot/baseUrl';
 import { ILogin, IRegister } from '../interfaces/http';
+import { StorageService } from './storageService';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private _httpclient : HttpClient){}
+  constructor(private _httpclient : HttpClient, private _storageService :StorageService){}
 
 
 
   register (registerData:IRegister):Observable<any>{
-    const headers= new HttpHeaders({'x-api-key': 'reqres-free-v1',
-    'Content-Type': 'application/json'});
-    return this._httpclient.post(`${baseUrl}/users`,registerData,{headers});
+
+    return this._httpclient.post(`${baseUrl}/users`,registerData);
   }
 
-  login(loginUser: ILogin): Observable<any> {
-    const headers= new HttpHeaders({'x-api-key': 'reqres-free-v1',
-    'Content-Type': 'application/json'});
-    return this._httpclient.post(`${baseUrl}/login`, loginUser,{headers});
+  login(loginUser:IRegister): Observable<any> {
+
+    return this._httpclient.post(`${baseUrl}/auth/login`, loginUser);
   }
+
+  getUsers():Observable<any>{
+    return this._httpclient.get<any[]>(`${baseUrl}/users`)
+  }
+
+  authorized(): boolean {
+    if (this._storageService.getItem('id')) {
+      return true;
+    } else return false;
+  }
+
+
 }

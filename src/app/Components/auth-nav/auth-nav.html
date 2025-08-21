@@ -2,7 +2,9 @@
     <p-menubar>
         <ng-template pTemplate="start">
           <figure class="my-0 mx-2">
-            <img class="w-2rem" src="logo.svg" alt="logo" />
+            <a [routerLink]="['home']">
+            <img   class="w-2rem" src="logo.svg" alt="logo" />
+            </a>
           </figure>
         </ng-template>
         <ng-template #end>

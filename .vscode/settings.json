@@ -1,0 +1,4 @@
+{
+    "terminal.integrated.shellIntegration.showCommandGuide": true,
+    "github.copilot.chat.terminalChatLocation": "chatView"
+}

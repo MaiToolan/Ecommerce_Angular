@@ -1,3 +1,4 @@
+import { StorageService } from './../../core/service/storageService';
 import { Component, ViewEncapsulation} from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
@@ -14,6 +15,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './register.html',
   styleUrl: './register.scss',
   encapsulation: ViewEncapsulation.None,
+  standalone:true
 })
 export class Register {
 
@@ -26,7 +28,8 @@ export class Register {
   constructor(private _authService: AuthService,
      private _messageService: MessageService,
     private _router: Router,
-    private _ngxSpinnerService: NgxSpinnerService) {
+    private _ngxSpinnerService: NgxSpinnerService,
+    private _storageService : StorageService) {
     this.initFormControls();
     this.initFormGroupe();
   }
@@ -82,11 +85,17 @@ export class Register {
     this._authService.register(data).subscribe({
       next: (response) => {
           this.show('success', 'success', 'success register');
-          const { email, password } = data;
-          this._authService.login({email, password }).subscribe((next) => {
-            this._router.navigate(['home']);
+          const { username, email, password } = data;
+          this._authService.getUsers().subscribe(users=>{
+    const user=users.find((u: {email: string})=>u.email===data.email);
+    if(user){
+      this._authService.login(data).subscribe((next) => {
+            this._storageService.setItem('name',data.username);
+            this._storageService.setItem('id',user.id);
+            this._router.navigate(['/home']);
           });
-
+          }
+    })
         this._ngxSpinnerService.hide();
       },
       error: (err) => {

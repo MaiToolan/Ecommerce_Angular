@@ -8,7 +8,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   selector: 'app-auth-nav',
   imports: [MenubarModule,RouterLink,RouterLinkActive],
   templateUrl: './auth-nav.html',
-  styleUrl: './auth-nav.scss'
+  styleUrl: './auth-nav.scss',
+  standalone:true
 })
 export class AuthNav {
   items: MenuItem[] | undefined;
