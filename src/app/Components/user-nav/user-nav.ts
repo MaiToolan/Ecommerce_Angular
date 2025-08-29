@@ -8,7 +8,9 @@ import { CommonModule } from '@angular/common';
 import { RippleModule } from 'primeng/ripple';
 import { Router, RouterLink,RouterLinkActive } from '@angular/router';
 import { StorageService } from '../../core/service/storageService';
-import { UserData } from '../../core/service/user-data';
+import { CartService } from '../../core/service/cart-service';
+import { Icart } from '../../core/interfaces/cart';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-nav',
@@ -18,22 +20,25 @@ import { UserData } from '../../core/service/user-data';
   standalone:true,
   encapsulation: ViewEncapsulation.None,
 })
-export class UserNav {
+export class UserNav implements OnInit{
+
   constructor(private _storageservice :StorageService,
-              private _userData :UserData,
-              private _router :Router,
-              private __cahangeDetector :ChangeDetectorRef
+              public _cartService :CartService,
+              private _router :Router
             ){}
 
    items: MenuItem[] | undefined;
    logOut: boolean = false;
    userName:string |null='';
-   cartCount:number=0;
+   userCart:Icart []=[];
+   cartCount$ !:Observable<number>;
 
 
     ngOnInit() {
-      this.getUserCartCount();
       this.userName = this._storageservice.getItem('name');
+      this.cartCount$ = this._cartService.cartCount$;
+      this._cartService.getCartCount();
+
         this.items = [
       {
         label: 'Home',
@@ -53,28 +58,12 @@ export class UserNav {
     ];
     }
 
-    getUserCartCount(){
-        const ID =Number(this._storageservice.getItem('id')?? 0);
-        this._userData.getAllCarts().subscribe(carts=>{
-            const userCarts= carts.filter((c: { userId: any })=>c.userId===ID);
-            if(userCarts && userCarts.length>0){
-              let total=0;
-              userCarts.forEach((cart:any) => {
-                this._userData.getUserCart(cart.id).subscribe(c=>{
-                total+=c.products.reduce((sum:number,p:any)=> sum+ p.quantity,0);
-                this.cartCount=total;
-                  this.__cahangeDetector.detectChanges();
-              });
-              })
-
-            }
-          })
-    }
 
     logout():void{
       this._storageservice.removeItem('id');
       this._storageservice.removeItem('name');
-      this._router.navigate(['login']);
+      this._storageservice.removeItem('cart');
+      this._router.navigate(['/login']);
     }
 
 }

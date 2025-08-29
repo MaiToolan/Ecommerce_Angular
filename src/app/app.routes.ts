@@ -5,6 +5,15 @@ import { authGuard } from './core/Gaurds/authGuard';
 import { registerGuard } from './core/Gaurds/register-guard';
 
 export const routes: Routes = [
+
+  {path:'',loadComponent:()=>import('./Layouts/auth-layout/auth-layout').then(c=>c.AuthLayout),
+    children:[
+      {path:'',redirectTo:'login',pathMatch:'full'},
+      {path:'login',loadComponent:()=>import('./Pages/login/login').then(c=>c.Login)},
+      {path:'register',loadComponent:()=>import('./Pages/register/register').then(c=>c.Register),canDeactivate:[registerGuard]},
+
+    ]
+  },
   {path:'',loadComponent:()=>import('./Layouts/user-layout/user-layout').then(c=>c.UserLayout),canActivate:[authGuard],
     children:[
       {path:'',redirectTo:'home',pathMatch:'full'},
@@ -13,14 +22,6 @@ export const routes: Routes = [
       {path:'category',loadComponent:()=>import('./Pages/category/category').then(c=>c.Category)},
       {path:'cart',loadComponent:()=>import('./Pages/cart/cart').then(c=>c.Cart)},
       {path:'details',loadComponent:()=>import('./Pages/details/details').then(c=>c.Details)}
-    ]
-  },
-  {path:'',loadComponent:()=>import('./Layouts/auth-layout/auth-layout').then(c=>c.AuthLayout),
-    children:[
-      {path:'',redirectTo:'login',pathMatch:'full'},
-      {path:'login',loadComponent:()=>import('./Pages/login/login').then(c=>c.Login)},
-      {path:'register',loadComponent:()=>import('./Pages/register/register').then(c=>c.Register),canDeactivate:[registerGuard]},
-      {path:'home',loadComponent:()=>import('./Pages/home/home').then(c=>c.Home)}
     ]
   }
 

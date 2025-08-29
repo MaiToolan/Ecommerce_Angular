@@ -6,17 +6,13 @@ import { baseUrl } from '../apiRoot/baseUrl';
 @Injectable({
   providedIn: 'root'
 })
-export class UserData {
+export class productService {
 
   constructor(private _httpClient: HttpClient){}
 
-  getAllCarts():Observable<any>{
-    return this._httpClient.get<any[]>(`${baseUrl}/carts`);
-  }
-  getUserCart(id:string):Observable<any>{
-    return this._httpClient.get(`${baseUrl}/carts/${id}`);
-  }
+
   getAllProducts():Observable<any>{
     return this._httpClient.get(`${baseUrl}/products`);
   }
+
 }

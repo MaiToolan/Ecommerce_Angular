@@ -7,7 +7,9 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
+import { loadingInterceptor } from './core/Interceptors/loading-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +21,8 @@ export const appConfig: ApplicationConfig = {
             theme: {
                 preset: Aura
             }
-        }),provideHttpClient()
+        }),provideHttpClient(withFetch(),withInterceptors([loadingInterceptor])),
+        MessageService
 
   ]
 };

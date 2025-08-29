@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { GalleriaModule } from 'primeng/galleria';
-import { IProducts } from '../../core/interfaces/http';
-import { UserData } from '../../core/service/user-data';
+import { IProducts } from '../../core/interfaces/product';
+import { productService } from '../../core/service/productService';
 import { Card } from '../../shared/card/card/card';
 import { PopularPipe } from '../../core/pipes/popular-pipe';
 
@@ -14,7 +14,7 @@ import { PopularPipe } from '../../core/pipes/popular-pipe';
   standalone:true
 })
 export class Home {
-  constructor(private _userData: UserData,
+  constructor(private _productService: productService,
     private _cdr :ChangeDetectorRef) {}
 
   images: any[] | undefined;
@@ -47,8 +47,8 @@ export class Home {
   }
 
   getAllProducts(): void {
-    this._userData.getAllProducts().subscribe((next) => {
-      this.smallProducts = next.slice(0, 4);
+    this._productService.getAllProducts().subscribe((next) => {
+      this.smallProducts = next.filter((p:any) => p?.rating.rate > 4).slice(0, 4);
       this.popularProducts = next;
       this._cdr.detectChanges();
     });

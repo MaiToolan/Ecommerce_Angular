@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, switchMap } from 'rxjs';
 import { baseUrl } from '../apiRoot/baseUrl';
-import { ILogin, IRegister } from '../interfaces/http';
+import { ILogin, IRegister } from '../interfaces/user';
 import { StorageService } from './storageService';
 
 @Injectable({
@@ -30,7 +30,9 @@ export class AuthService {
 
   authorized(): boolean {
     if (this._storageService.getItem('id')) {
+
       return true;
+
     } else return false;
   }
 

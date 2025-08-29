@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IProducts } from '../interfaces/http';
+import { IProducts } from '../interfaces/product';
 
 @Pipe({
   name: 'popular',
