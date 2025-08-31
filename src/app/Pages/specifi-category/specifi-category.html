@@ -1,0 +1,10 @@
+<section>
+  <div class="container-fluid">
+    <h2 class="capitalize text-color-secondary my-5">
+      all {{ categoryName }} Category
+    </h2>
+    @if(products$ |async ; as products){
+       <app-card [isSmallCard]="false" [Products]="products"></app-card>
+    }
+     </div>
+</section>

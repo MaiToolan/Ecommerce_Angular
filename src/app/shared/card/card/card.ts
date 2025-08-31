@@ -6,10 +6,11 @@ import { Component, Input } from '@angular/core';
 import { IProducts } from '../../../core/interfaces/product';
 import { ButtonModule } from 'primeng/button';
 import { NotificationService } from '../../../core/service/notification-service';
+import { Empty } from '../../empty/empty';
 
 @Component({
   selector: 'app-card',
-  imports: [NgClass,ButtonModule],
+  imports: [NgClass,ButtonModule,Empty,RouterLink],
   templateUrl: './card.html',
   styleUrl: './card.scss',
   standalone:true,
@@ -21,6 +22,7 @@ export class Card {
     ){}
     @Input({ required: true }) isSmallCard: boolean = false;
    @Input({ required: true }) Products!: IProducts[];
+   @Input() searchKey :string='';
 
    addToCart(product:IProducts) {
     this._cartService.addToCart(product);

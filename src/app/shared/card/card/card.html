@@ -67,5 +67,17 @@
     </div>
   </div>
 }
+@empty {
+  @if(!isSmallCard){
+     <div class="flex-1 text-center">
+    <app-empty></app-empty>
+    <h5 class="capitalize">No products to show <span class="text-red-500">{{searchKey}}</span></h5>
+     <p-button [routerLink]="['/home']" label="Back To Home"
+      severity="warn"
+      styleClass="my-2 uppercase w-full"
+    />
+  </div>
+  }
+}
 </div>
 
