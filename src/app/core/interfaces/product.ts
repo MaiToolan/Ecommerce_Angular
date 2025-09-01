@@ -5,6 +5,6 @@ export interface IProducts {
   price: number;
   description: string;
   category: string;
-  discount: number;
   rating:{rate:number ,count :number}
+  quantity:number;
 }

@@ -68,6 +68,9 @@ export class CartService {
     isProductInCart(productId:number):boolean{
       return this.addedProducts.has(productId);
     }
+    removeProductFromCart():void{
+      this.addedProducts.clear();
+    }
   }
 
 

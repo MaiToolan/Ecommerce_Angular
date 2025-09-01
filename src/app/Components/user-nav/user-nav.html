@@ -16,7 +16,7 @@
     <ng-template pTemplate="end">
       <div class="card flex justify-content-center align-items-center gap-3">
         <a>
-          <span class="pi pi-shopping-cart text-3xl"pBadge [value]="(cartCount$|async)??0"></span>
+          <span [routerLink]="['/cart']" class="pi pi-shopping-cart text-3xl cursor-pointer"pBadge [value]="(cartCount$|async)??0"></span>
         </a>
         <a (click)="logOut = !logOut" class="user-name p-3 text-white bg-orange-400 font-bold capitalize relative cursor-pointer">
           <span>{{userName}}</span>

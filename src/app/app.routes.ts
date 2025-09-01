@@ -21,7 +21,7 @@ export const routes: Routes = [
       {path:'products',loadComponent:()=>import('./Pages/products/products').then(c=>c.Products)},
       {path:'category',loadComponent:()=>import('./Pages/category/category').then(c=>c.Category)},
       {path:'cart',loadComponent:()=>import('./Pages/cart/cart').then(c=>c.Cart)},
-      {path:'details',loadComponent:()=>import('./Pages/details/details').then(c=>c.Details)},
+      {path:'details/:id',loadComponent:()=>import('./Pages/details/details').then(c=>c.Details)},
       {path:'specificcategory/:category',loadComponent:()=>import('./Pages/specifi-category/specifi-category').then(c=>c.SpecifiCategory)}
     ]
   }

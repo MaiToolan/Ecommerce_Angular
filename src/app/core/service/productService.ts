@@ -15,4 +15,8 @@ export class productService {
     return this._httpClient.get(`${baseUrl}/products`);
   }
 
+  getDetails(id:string):Observable<any>{
+    return this._httpClient.get(`${baseUrl}/products/${id}`);
+  }
+
 }
